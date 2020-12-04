@@ -15,7 +15,7 @@ cp -rfp inventory/sample inventory/mycluster
 
 # Update Ansible inventory file with inventory builder
 # declare -a IPS=(10.10.1.3 10.10.1.4 10.10.1.5)
-declare -a IPS=(127.0.0.1)
+declare -a IPS=(192.168.30.10)
 
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
@@ -29,3 +29,7 @@ cat inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
 # Without --become the playbook will fail to run!
 ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
 
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
