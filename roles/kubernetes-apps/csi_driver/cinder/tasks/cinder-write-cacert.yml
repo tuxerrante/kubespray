@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 # include to workaround mitogen issue
 # https://github.com/dw/mitogen/issues/663
@@ -10,3 +11,17 @@
     mode: 0640
   tags: cinder-csi-driver
   delegate_to: "{{ delegate_host_to_write_cacert }}"
+=======
+---
+# include to workaround mitogen issue
+# https://github.com/dw/mitogen/issues/663
+
+- name: Cinder CSI Driver | Write cacert file
+  copy:
+    src: "{{ cinder_cacert }}"
+    dest: "{{ kube_config_dir }}/cinder-cacert.pem"
+    group: "{{ kube_cert_group }}"
+    mode: 0640
+  tags: cinder-csi-driver
+  delegate_to: "{{ delegate_host_to_write_cacert }}"
+>>>>>>> master
