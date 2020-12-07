@@ -41,5 +41,5 @@ fi
 ansible-playbook -i inventory/expert_cluster/hosts.yaml  --become --become-user=root cluster.yml
 
 mkdir -p "$HOME/.kube"
-sudo cp -i /etc/kubernetes/admin.conf "$HOME/.kube/config"
+sudo cp -f -i /etc/kubernetes/admin.conf "$HOME/.kube/config"
 sudo chown "$(id -u):$(id -g)" "$HOME/.kube/config"

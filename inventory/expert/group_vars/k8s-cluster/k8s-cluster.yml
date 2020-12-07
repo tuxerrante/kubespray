@@ -183,8 +183,8 @@ kata_containers_enabled: false
 # Settings for default containerd runtime
 containerd_default_runtime:
   type: io.containerd.runtime.v1.linux
-#   engine: ''
-#   root: ''
+  engine: ''
+  root: ''
 #
 # Settings for additional runtimes for containerd configuration
 # containerd_runtimes:
