@@ -3,8 +3,9 @@
 #   kubespray first startup on a test machine          =
 # ======================================================
 
-git clone https://github.com/tuxerrante/kubespray
-cd kubespray
+git clone https://github.com/kubernetes-sigs/kubespray.git
+git checkout v2.14.2
+cd kubespray || exit 1
 
 # Install dependencies from ``requirements.txt``
 # sudo yum install -y ansible-2.9.15 python-jinja2 python-netaddr
@@ -15,7 +16,8 @@ cp -rfp inventory/sample inventory/mycluster
 
 # Update Ansible inventory file with inventory builder
 # declare -a IPS=(10.10.1.3 10.10.1.4 10.10.1.5)
-declare -a IPS=(192.168.30.10)
+my_ip=$(hostname -i)
+declare -a IPS=($my_ip)
 
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
