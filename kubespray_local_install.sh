@@ -2,6 +2,7 @@
 # ======================================================
 #   kubespray first startup on a test machine          =
 # ======================================================
+sudo yum install -y ansible-2.9.*
 
 # git clone https://github.com/kubernetes-sigs/kubespray.git
 # cd kubespray || exit 1
