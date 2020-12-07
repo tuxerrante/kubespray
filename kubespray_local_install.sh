@@ -3,9 +3,9 @@
 #   kubespray first startup on a test machine          =
 # ======================================================
 
-git clone https://github.com/kubernetes-sigs/kubespray.git
+# git clone https://github.com/kubernetes-sigs/kubespray.git
+# cd kubespray || exit 1
 git checkout expert
-cd kubespray || exit 1
 
 # Install dependencies from ``requirements.txt``
 # sudo yum install -y ansible-2.9.15 python-jinja2 python-netaddr
@@ -26,7 +26,7 @@ CONFIG_FILE=inventory/expert_cluster/hosts.yaml python3 contrib/inventory_builde
 # cat inventory/expert_cluster/group_vars/k8s-cluster/k8s-cluster.yml
 
 # Enable containerd runtime
-if ! sudo systemctl status contain/erd; then 
+if ! sudo systemctl status containerd; then 
     sudo yum install -y yum-utils device-mapper-persistent-data lvm2
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum update -y && sudo yum install -y containerd.io
