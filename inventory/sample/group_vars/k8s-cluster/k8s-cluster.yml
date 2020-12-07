@@ -30,7 +30,7 @@ retry_stagger: 5
 kube_cert_group: kube-cert
 
 # Cluster Loglevel configuration
-kube_log_level: 1
+kube_log_level: 2
 
 # Directory where credentials will be stored
 credentials_dir: "{{ inventory_dir }}/credentials"
@@ -181,8 +181,8 @@ kata_containers_enabled: false
 ## Settings for containerd runtimes (only used when container_manager is set to containerd)
 #
 # Settings for default containerd runtime
-#containerd_default_runtime:
-#  type: io.containerd.runtime.v1.linux
+# containerd_default_runtime:
+#   type: io.containerd.runtime.v1.linux
 #   engine: ''
 #   root: ''
 #
@@ -230,9 +230,9 @@ podsecuritypolicy_enabled: false
 # podsecuritypolicy_privileged_spec: {}
 
 # Make a copy of kubeconfig on the host that runs Ansible in {{ inventory_dir }}/artifacts
-# kubeconfig_localhost: true
+# kubeconfig_localhost: false
 # Download kubectl onto the host that runs Ansible in {{ bin_dir }}
-kubectl_localhost: true
+# kubectl_localhost: false
 
 # A comma separated list of levels of node allocatable enforcement to be enforced by kubelet.
 # Acceptable options are 'pods', 'system-reserved', 'kube-reserved' and ''. Default is "".

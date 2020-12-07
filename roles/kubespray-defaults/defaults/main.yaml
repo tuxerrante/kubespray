@@ -70,11 +70,11 @@ local_release_dir: "/tmp/releases"
 retry_stagger: 5
 
 # Install epel repo on Centos/RHEL
-epel_enabled: true
+epel_enabled: false
 
 # DNS configuration.
 # Kubernetes cluster name, also will be used as DNS domain
-cluster_name: expert.local
+cluster_name: cluster.local
 # Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
 ndots: 2
 # Default resolv.conf options
