@@ -39,7 +39,7 @@ fi
 # The option `--become` is required, as for example writing SSL keys in /etc/,
 # installing packages and interacting with various systemd daemons.
 # Without --become the playbook will fail to run!
-ansible-playbook -i inventory/expert_cluster/hosts.yaml  --become --become-user=root cluster.yml
+ansible-playbook -i inventory/expert_cluster/hosts.yaml --become --become-user=root cluster.yml
 
 mkdir -p "$HOME/.kube"
 sudo cp -f -i /etc/kubernetes/admin.conf "$HOME/.kube/config"
