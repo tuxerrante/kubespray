@@ -26,7 +26,7 @@ CONFIG_FILE=inventory/expert_cluster/hosts.yaml python3 contrib/inventory_builde
 # cat inventory/expert_cluster/group_vars/k8s-cluster/k8s-cluster.yml
 
 # Enable containerd runtime
-if ! sudo systemctl status -q containerd; then 
+if ! sudo systemctl status containerd 1>/dev/null; then 
     sudo yum install -y yum-utils device-mapper-persistent-data lvm2
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum update -y && sudo yum install -y containerd.io
