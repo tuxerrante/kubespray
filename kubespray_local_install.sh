@@ -3,7 +3,34 @@
 #   kubespray first startup on a test machine          =
 # ======================================================
 
-# git clone https://github.com/kubernetes-sigs/kubespray.git
+
+# Check if SeLinux disabled
+SELINUXSTATUS=$(sudo getenforce);
+if [ "$SELINUXSTATUS" == "Enforcing" ]; then
+    sudo setenforce 0 && sudo sed -i s/^SELINUX=.*$/SELINUX=permissive/ /etc/selinux/config
+    echo "SELINUX set to permissive, please reboot the machine."
+    exit 0
+fi;
+
+# Check firewall status
+FWSTATUS=$(sudo systemctl status firewalld >/dev/null);
+if [ "$FWSTATUS" == "running" ]; then
+    firewall-cmd --permanent --add-port=6443/tcp        # kubelet
+    firewall-cmd --permanent --add-port=10250/tcp
+    firewall-cmd --permanent --add-port=2379-2380/tcp   # kube-apiserver
+    firewall-cmd --permanent --add-port=10251/tcp
+    firewall-cmd --permanent --add-port=10252/tcp
+    firewall-cmd --permanent --add-port=10255/tcp
+    firewall-cmd --permanent --add-port=10257/tcp       # kube-controll
+    firewall-cmd --permanent --add-port=10259/tcp       # kube-schedule
+    firewall-cmd –-reload
+fi;
+
+
+# Useful for ansible administrators
+sudo yum install -y python3 python-argcomplete
+
+# git clone https://github.com/tuxerrante/kubespray.git
 # cd kubespray || exit 1
 
 # Install dependencies from ``requirements.txt``
@@ -28,15 +55,24 @@ CONFIG_FILE=inventory/expert/hosts.yaml python3 contrib/inventory_builder/invent
 if ! sudo systemctl status containerd 1>/dev/null; then 
     sudo yum install -y yum-utils device-mapper-persistent-data lvm2
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    sudo yum update -y && sudo yum install -y containerd.io
+    sudo yum update -y 
+    sudo yum install -y containerd.io
     sudo mkdir -p /etc/containerd
-    sudo containerd config default | tee /etc/containerd/config.toml
+    sudo containerd config default | sudo tee /etc/containerd/config.toml
+    sudo systemctl enable containerd
+fi
+
+# Enable docker
+if ! sudo systemctl status docker 1>/dev/null; then 
+    sudo yum update -y 
+    sudo yum install -y docker
+	sudo systemctl restart containerd 
+    sudo systemctl enable containerd
 fi
 
 # Deploy Kubespray with Ansible Playbook - run the playbook as root
 # The option `--become` is required, as for example writing SSL keys in /etc/,
 # installing packages and interacting with various systemd daemons.
-# Without --become the playbook will fail to run!
 ansible-playbook -i inventory/expert/hosts.yaml --become --become-user=root cluster.yml
 
 mkdir -p "$HOME/.kube"
